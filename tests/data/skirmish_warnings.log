@@ -1,0 +1,39 @@
+RelicCardinal started at 2026-11-23 16:25 [GMT Standard Time UTC 00:00]
+(I) [16:25:41.616] [000094748]: GAME -- game runtime returned language 'en-US'
+(I) [16:25:41.632] [000094748]: GAME -- system locale 'en-US' matches 'en'
+(I) [16:25:41.632] [000094748]: GAME -- [Age of Empires IV] set to language [en]
+(I) [16:27:10.266] [000094748]: GAME -- Scenario: 
+(I) [16:27:10.266] [000094748]: GAME -- Win Condition Qualified Name: 00000000000000000000000000000000:149419911
+(I) [16:27:10.266] [000094748]: GAME -- Win Condition Name: standard_mode
+(I) [16:27:10.266] [000094748]: GAME -- Human Player: 0 TestPlayer 1234567 0 japanese
+(I) [16:27:10.266] [000094748]: GAME -- AI Player: 1 2 A.I. Hard -1 1 rus
+(I) [16:27:16.958] [000124556]: MapGen -- Generating with biome taiga_woodlands_snow
+(I) [16:27:16.958] [000124556]: MapGen -- Generating with layout rolling_rivers
+(I) [16:27:16.958] [000124556]: MapGen -- Generating with size map_size_416
+(I) [16:27:16.958] [000124556]: MapGen -- Generating with seed 1855694536 (0x6E9BA6C8)
+(I) [16:27:16.958] [000124556]: MapGen -- Generating with player count 2
+(I) [16:27:16.958] [000124556]: MapGen -- Generating with players locations: Random
+(I) [16:27:21.257] [000124556]: GAME -- Recording game
+(I) [16:27:29.512] [000094748]: GAME -- Starting mission: 
+(I) [16:30:03.425] [000094748]: GAME -- SimulationController::Pause 1
+(I) [16:30:51.632] [000094748]: GAME -- SimulationController::Pause 0
+(I) [16:32:00.127] [000094748]: Age up started from dark_age to feudal_age for player id 4
+(I) [16:32:05.014] [000094748]: Age up complete from dark_age for player id 4
+(I) [16:33:22.004] [000094748]: Age up started from dark_age to feudal_age for player id 3
+(I) [16:33:27.012] [000094748]: Age up complete from dark_age for player id 3
+(I) [16:33:31.246] [000094748]: GAME -- SimulationController::Pause 1
+(I) [16:33:32.161] [000094748]: GAME -- SimulationController::Pause 0
+(I) [16:34:03.196] [000094748]: GAME -- SimulationController::Pause 1
+(I) [16:34:57.784] [000094748]: GAME -- SimulationController::Pause 0
+(I) [16:43:31.173] [000094748]: Age up started from feudal_age to castle_age for player id 4
+(I) [16:43:36.433] [000094748]: Age up complete from feudal_age for player id 4
+(I) [16:54:28.184] [000094748]: Age up started from feudal_age to castle_age for player id 3
+(I) [16:54:33.698] [000094748]: Age up complete from feudal_age for player id 3
+(I) [16:55:46.680] [000094748]: GAME -- SimulationController::Pause 1
+(I) [16:55:47.012] [000094748]: GAME -- SimulationController::Pause 0
+(I) [16:55:47.416] [000094748]: GAME -- SimulationController::Pause 1
+(I) [16:55:48.899] [000094748]: GAME -- Frame 12753 - SimKillPlayer - Destroying SimPlayer 1003, reason 3
+(I) [16:55:49.937] [000094748]: GameObj::ShutdownGameObj
+(I) [16:26:39.155] [000116616]: MessageCounts: inval=0/0, seek=0/0, join=0/0, ichk=0/0, sk_r=0/0, deny=0/0, Padd=0/0, Pdel=0/0, drop=0/0, data=0/0, mdat=0/0, voip=0/0, rchk=0/0, nudg=0/0, Thdr=0/0, Peer=0/0, PPrx=0/0, ping=0/0, Pfrg=0/0, rely=0/0, lb_p=0/0, lb_c=0/0, cast=0/0, cdat=0/0, sorq1=0/0, sorp=0/0, acto=0/0, spob=0/0, sorq2=0/0, setp=0/0, actr=0/0, lsim=0/0, rlbc=0/0, rlbc2=0/0, endg=0/0
+(I) [16:27:40.009] [000116616]: MessageCounts: inval=0/0, seek=0/0, join=0/0, ichk=0/0, sk_r=0/0, deny=0/0, Padd=0/0, Pdel=0/0, drop=0/0, data=0/0, mdat=0/0, voip=0/0, rchk=0/0, nudg=0/0, Thdr=0/0, Peer=0/0, PPrx=0/0, ping=0/0, Pfrg=0/0, rely=0/0, lb_p=0/0, lb_c=0/0, cast=0/0, cdat=0/0, sorq1=0/0, sorp=0/0, acto=0/0, spob=0/0, sorq2=0/0, setp=0/0, actr=0/0, lsim=0/0, rlbc=0/0, rlbc2=0/0, endg=0/0
+(I) [16:28:41.008] [000116616]: MessageCounts: inval=0/0, seek=0/0, join=0/0, ichk=0/0, sk_r=0/0, deny=0/0, Padd=0/0, Pdel=0/0, drop=0/0, data=0/0, mdat=0/0, voip=0/0, rchk=0/0, nudg=0/0, Thdr=0/0, Peer=0/0, PPrx=0/0, ping=0/0, Pfrg=0/0, rely=0/0, lb_p=0/0, lb_c=0/0, cast=0/0, cdat=0/0, sorq1=0/0, sorp=0/0, acto=0/0, spob=0/0, sorq2=0/0, setp=0/0, actr=0/0, lsim=0/0, rlbc=0/0, rlbc2=0/0, endg=0/0

@@ -15,6 +15,8 @@ class _Settings:
         self.send_email_logs: bool = True
         self.log_matches: bool = True
         self.interval: int = 15
+        self.local_games: bool = True  # Detect skirmish/local matches from the game log
+        self.aoe4_log_path: str = ""  # Path to warnings.log, empty = find automatically
         self.app_width: int = 900
         self.app_height: int = 600
         self.steam_id: Optional[int] = None
