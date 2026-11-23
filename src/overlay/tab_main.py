@@ -10,6 +10,7 @@ from PyQt5 import QtWidgets
 
 import overlay.helper_func as hf
 from overlay.api_checking import Api_checker, get_full_match_history
+from overlay.local_log_checking import LocalLogChecker
 from overlay.logging_func import get_logger, log_match
 from overlay.settings import settings
 from overlay.tab_build_orders import BoTab
@@ -31,6 +32,7 @@ class TabWidget(QtWidgets.QTabWidget):
         super().__init__(parent)
         self.version = version
         self.api_checker = Api_checker()
+        self.local_checker = LocalLogChecker()
         self.websocket_manager = Websocket_manager(settings.websocket_port)
         self.force_stop: bool = False
         self.prevent_overlay_update: bool = False
@@ -62,6 +64,8 @@ class TabWidget(QtWidgets.QTabWidget):
         hf.create_custom_files()
         self.settigns_tab.start()
         self.run_new_game_check()
+        if settings.local_games:
+            self.run_local_game_check()
         self.websocket_manager.run()
         self.send_ws_colors()
         self.check_waking()
@@ -120,20 +124,48 @@ class TabWidget(QtWidgets.QTabWidget):
             logger.info(
                 f"New live game (game_id: {game_data['game_id']} | mode: {game_data['kind']} | started: {game_data['started_at']})"
             )
-            self.override_tab.update_data(processed)
-            if not self.prevent_overlay_update:
-                self.settigns_tab.overlay_widget.update_data(processed)
-                self.websocket_manager.send({
-                    "type": "player_data",
-                    "data": processed
-                })
+            self.show_match(processed)
 
         self.run_new_game_check(delayed_seconds=30)
+
+    def show_match(self, processed: Dict[str, Any]):
+        """ Shows match data on the overlay and sends it to the stream overlay"""
+        self.override_tab.update_data(processed)
+        if not self.prevent_overlay_update:
+            self.settigns_tab.overlay_widget.update_data(processed)
+            self.websocket_manager.send({
+                "type": "player_data",
+                "data": processed
+            })
+
+    def run_local_game_check(self, delayed_seconds: int = 0):
+        """ Watches the game's own log for skirmish (vs AI) and other local matches"""
+        scheldule(self.new_local_game, self.local_checker.check_for_new_game,
+                  delayed_seconds)
+
+    def new_local_game(self, game_data: Optional[Dict[str, Any]]):
+        if self.force_stop:
+            return
+        if game_data is not None:
+            if game_data['event'] == 'start':
+                logger.info(
+                    f"New local game (map: {game_data['map']} | vs AI: {game_data['vs_ai']} | started: {game_data['started']})"
+                )
+                # Online matches are already handled by aoe4world
+                if game_data['vs_ai'] or not settings.profile_id:
+                    self.show_match(game_data)
+            elif game_data['event'] == 'end':
+                seconds = game_data.get('game_seconds') or 0
+                logger.info(
+                    f"Local game finished (game time {int(seconds // 60)}:{int(seconds % 60):02d})"
+                )
+        self.run_local_game_check()
 
     def stop_checking_api(self):
         """ The app is closing, we need to start shuttings things down"""
         self.force_stop = True
         self.api_checker.force_stop = True
+        self.local_checker.force_stop = True
 
     def check_for_new_version(self):
         """ Checks for a new version, creates a button if there is one """

@@ -41,6 +41,13 @@ API calls are done through [AoE4World.com](https://aoe4world.com/). For build or
 
 → *Note: To update the app delete the app folder and extract the new archive elsewhere.*
   
+# Skirmish and other local games
+This fork also works in **skirmish games against the AI**, which aoe4world doesn't track.
+* The app reads the game's own log file (`Documents/My Games/Age of Empires IV/warnings.log`) and fills the overlay when a match starts: your civ, the AI's civ and difficulty, and the map.
+* Online matches still use aoe4world as before.
+* Only files the game writes are read. Nothing touches game memory.
+* If your Documents folder is somewhere unusual, set `aoe4_log_path` in the app's `config.json`. Set `local_games` to `false` to turn this off.
+
 # Build orders
   * Two build orders types are available:
     * *Simple TXT*
