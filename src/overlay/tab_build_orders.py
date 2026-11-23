@@ -779,6 +779,7 @@ class BoTab(QtWidgets.QWidget):
         init_build_order_step = self.build_order_step
         self.build_order_step -= 1
         self.limit_build_order_step()
+        logger.info(f"Previous step hotkey: step {init_build_order_step + 1} -> {self.build_order_step + 1} of {self.build_order_step_count}")
         if (init_build_order_step !=
             self.build_order_step) and (self.build_order_step >= 0):
             self.update_overlay()
@@ -788,6 +789,7 @@ class BoTab(QtWidgets.QWidget):
         init_build_order_step = self.build_order_step
         self.build_order_step += 1
         self.limit_build_order_step()
+        logger.info(f"Next step hotkey: step {init_build_order_step + 1} -> {self.build_order_step + 1} of {self.build_order_step_count}")
         if (init_build_order_step !=
             self.build_order_step) and (self.build_order_step >= 0):
             self.update_overlay()
