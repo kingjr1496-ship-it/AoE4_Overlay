@@ -17,6 +17,8 @@ class _Settings:
         self.interval: int = 15
         self.local_games: bool = True  # Detect skirmish/local matches from the game log
         self.aoe4_log_path: str = ""  # Path to warnings.log, empty = find automatically
+        self.auto_build_orders: bool = True  # Pick a build order for the matchup when a game starts
+        self.aoe4guides_build_orders: bool = True  # Fetch matchup builds from aoe4guides.com
         self.app_width: int = 900
         self.app_height: int = 600
         self.steam_id: Optional[int] = None

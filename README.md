@@ -48,6 +48,14 @@ This fork also works in **skirmish games against the AI**, which aoe4world doesn
 * Only files the game writes are read. Nothing touches game memory.
 * If your Documents folder is somewhere unusual, set `aoe4_log_path` in the app's `config.json`. Set `local_games` to `false` to turn this off.
 
+# Build orders for your matchup
+When a game starts (skirmish or online), the app picks a build order for your civ against your opponent's civ:
+1. **Your own builds first.** If you've saved one named for the matchup, like `Japanese vs Rus`, it's selected.
+2. **Otherwise from [aoe4guides.com](https://aoe4guides.com).** The top-rated builds for your civ are added to the list (named `aoe4guides: ...`). Ones that mention your opponent's civ come first. Cycle through them with your cycle hotkey.
+
+Builds from aoe4guides.com are temporary and are removed when a new game starts or the app closes. Rename one to keep it. Thanks to aoe4guides.com for its free API. Results are cached for a few hours, so the app asks for each civ's builds only occasionally.
+Turn this off with `auto_build_orders` (everything) or `aoe4guides_build_orders` (only the download) in `config.json`.
+
 # Build orders
   * Two build orders types are available:
     * *Simple TXT*

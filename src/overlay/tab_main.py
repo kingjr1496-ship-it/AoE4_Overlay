@@ -11,6 +11,7 @@ from PyQt5 import QtWidgets
 import overlay.helper_func as hf
 from overlay.api_checking import Api_checker, get_full_match_history
 from overlay.local_log_checking import LocalLogChecker
+from overlay.matchup_build_orders import players_matchup
 from overlay.logging_func import get_logger, log_match
 from overlay.settings import settings
 from overlay.tab_build_orders import BoTab
@@ -130,6 +131,9 @@ class TabWidget(QtWidgets.QTabWidget):
 
     def show_match(self, processed: Dict[str, Any]):
         """ Shows match data on the overlay and sends it to the stream overlay"""
+        matchup = players_matchup(processed, settings.player_name)
+        if matchup is not None:
+            self.build_order_tab.load_matchup(*matchup)
         self.override_tab.update_data(processed)
         if not self.prevent_overlay_update:
             self.settigns_tab.overlay_widget.update_data(processed)

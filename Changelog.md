@@ -1,4 +1,5 @@
 ## in progress
+* When a game starts, a build order for your matchup is selected: your own saved one, or the top builds for your civ from aoe4guides.com.
 * Skirmish (vs AI) and other local matches are detected from the game's own warnings.log and shown on the overlay.
 * Build order images updated to .webp to match the ones from aoe4guides.com.
 * Build order updated for season 10 content.
