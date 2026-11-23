@@ -10,6 +10,8 @@ from overlay.build_order_tools import (
     check_valid_aoe4_build_order_from_string, civilization_flags)
 from overlay.custom_widgets import CustomKeySequenceEdit
 from overlay.logging_func import get_logger
+from overlay import matchup_build_orders as mbo
+from overlay.worker import scheldule
 from overlay.settings import settings
 
 logger = get_logger(__name__)
@@ -354,8 +356,75 @@ class BoTab(QtWidgets.QWidget):
 
     def closeEvent(self, _):
         """Function called when closing the widget."""
+        self.remove_fetched_build_orders()  # don't save temporary builds
         self.save_unchecked_state()
         self.overlay.close()
+
+    # Matchup build orders ---------------------------------------------------
+
+    def load_matchup(self, my_civ: str, enemy_civ: str):
+        """Selects a build order for this matchup: your own saved one if you
+        have it, otherwise the best ones from aoe4guides.com"""
+        if not settings.auto_build_orders:
+            return
+        self.matchup = (my_civ, enemy_civ)
+        self.remove_fetched_build_orders()
+
+        saved = mbo.pick_saved(settings.buildorders, my_civ, enemy_civ)
+        if saved is not None:
+            logger.info(f"Using your build order '{saved}' for {my_civ} vs {enemy_civ}")
+            self.select_build_order(saved)
+            return
+
+        if settings.aoe4guides_build_orders:
+            scheldule(self.got_matchup_builds, mbo.fetch_builds, my_civ)
+
+    def got_matchup_builds(self, builds):
+        if not builds or not getattr(self, "matchup", None):
+            logger.info("No build orders found on aoe4guides for this matchup")
+            return
+        my_civ, enemy_civ = self.matchup
+        self.remove_fetched_build_orders()
+        names = []
+        for build in mbo.rank_builds(builds, enemy_civ):
+            text = json.dumps(build, indent=2)
+            if not check_valid_aoe4_build_order_from_string(text):
+                continue
+            name = mbo.build_name(build, enemy_civ)
+            while name in settings.buildorders:
+                name += " "
+            settings.buildorders[name] = text
+            item = QtWidgets.QListWidgetItem(name)
+            item.setCheckState(QtCore.Qt.Checked)
+            item.setToolTip(f"From {mbo.SITE_URL}. Rename it to keep it after the app closes.")
+            self.bo_list.addItem(item)
+            names.append(name)
+        if names:
+            logger.info(f"Loaded {len(names)} aoe4guides build orders for {my_civ} vs {enemy_civ}")
+            self.select_build_order(names[0])
+
+    def select_build_order(self, name: str):
+        """Selects a build order by name, from its first step, and shows it"""
+        for row in range(self.bo_list.count()):
+            if self.bo_list.item(row).text() == name:
+                self.build_order_step = -1
+                self.bo_list.setCurrentRow(row)
+                self.update_overlay()
+                if settings.open_overlay_on_new_game and not self.overlay.isVisible():
+                    self.overlay.show()
+                return
+
+    def remove_fetched_build_orders(self):
+        """Removes build orders fetched from aoe4guides for an earlier match"""
+        for row in reversed(range(self.bo_list.count())):
+            name = self.bo_list.item(row).text()
+            if name.startswith(mbo.FETCHED_PREFIX):
+                if self.bo_list.count() == 1:
+                    break  # the list must keep one entry
+                if self.bo_list.currentRow() == row:
+                    self.bo_list.setCurrentRow(0 if row else 1)
+                self.bo_list.takeItem(row)
+                settings.buildorders.pop(name, None)
 
     def init_hotkeys(self):
         """Initialize all the hotkeys"""
@@ -710,6 +779,7 @@ class BoTab(QtWidgets.QWidget):
         init_build_order_step = self.build_order_step
         self.build_order_step -= 1
         self.limit_build_order_step()
+        logger.info(f"Previous step hotkey: step {init_build_order_step + 1} -> {self.build_order_step + 1} of {self.build_order_step_count}")
         if (init_build_order_step !=
             self.build_order_step) and (self.build_order_step >= 0):
             self.update_overlay()
@@ -719,6 +789,7 @@ class BoTab(QtWidgets.QWidget):
         init_build_order_step = self.build_order_step
         self.build_order_step += 1
         self.limit_build_order_step()
+        logger.info(f"Next step hotkey: step {init_build_order_step + 1} -> {self.build_order_step + 1} of {self.build_order_step_count}")
         if (init_build_order_step !=
             self.build_order_step) and (self.build_order_step >= 0):
             self.update_overlay()
